@@ -42,12 +42,17 @@ function TVshow() {
                       >
                         {tvShow.creator}
                       </Badge>
-                      <Badge
-                        variant="gradient"
-                        gradient={{ from: "teal", to: "blue", deg: 60 }}
-                      >
-                        {tvShow.genre}
-                      </Badge>
+
+                      {tvShow.genre.map((genre) => (
+                        <Badge
+                          key={genre}
+                          variant="gradient"
+                          gradient={{ from: "teal", to: "blue", deg: 60 }}
+                        >
+                          {genre}
+                        </Badge>
+                      ))}
+
                       <Badge
                         variant="gradient"
                         gradient={{ from: "#ed6ea0", to: "#ec8c69", deg: 35 }}
