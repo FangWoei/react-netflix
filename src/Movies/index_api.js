@@ -1,29 +1,25 @@
+import {
+  Title,
+  Grid,
+  Card,
+  Badge,
+  Group,
+  Space,
+  Divider,
+  Button,
+} from "@mantine/core";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Title, Grid, Card, Badge, Group, Space, Button } from "@mantine/core";
 
 function Movies() {
   const [movies, setMovies] = useState([]);
-  const [moviesAPI, setMoviesAPI] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/movies")
-      .then((response) => {
-        setMovies(response.data);
-        setMoviesAPI(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  const filterMovie = (genre = "") => {
-    if (genre !== "") {
-      const newMovies = moviesAPI.filter((m) => m.genre === genre);
-      setMovies(newMovies);
-    } else {
-      setMovies(moviesAPI);
+  const filterMovie = async (genre = "") => {
+    try {
+      const response = await axios.get("http://localhost:5000/movies" + genre);
+      setMovies(response.data);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -32,15 +28,8 @@ function Movies() {
       <Title order={3} align="center">
         Movies
       </Title>
-      <Space h="20px" />
+      <Space h="30px" />'
       <Group>
-        <Button
-          onClick={() => {
-            filterMovie("");
-          }}
-        >
-          All
-        </Button>
         <Button
           onClick={() => {
             filterMovie("Drama");
@@ -69,17 +58,24 @@ function Movies() {
         >
           Sci-fi
         </Button>
+        <Button
+          onClick={() => {
+            filterMovie("");
+          }}
+        >
+          All
+        </Button>
       </Group>
-      <Space h="20px" />
+      <Space h="30px" />
       <Grid>
         {movies
           ? movies.map((movie) => {
               return (
-                <Grid.Col key={movie._id} span={4}>
+                <Grid.Col key={movie.id} span={4}>
                   <Card withBorder shadow="sm" p="20px">
                     <Title order={5}>{movie.title}</Title>
                     <Space h="20px" />
-                    <Group position="center" spacing="5px">
+                    <Group position="center">
                       <Badge
                         variant="gradient"
                         gradient={{ from: "blue", to: "red" }}
